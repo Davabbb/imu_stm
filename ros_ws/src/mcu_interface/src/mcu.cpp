@@ -20,7 +20,7 @@ std::string IMU_TEMP_TOPIC_POSTFIX = "_temp";
 
 std::string IMU_TEMP_TOPIC = IMU_TOPIC + IMU_TEMP_TOPIC_POSTFIX;
 std::string PORT;// = "/dev/ttyUSB200";  // port name
-const int BAUD = 2000000;
+const int BAUD = 500000;
 int RATE = 10000;
 int TIMOUT = 10;
 uint32_t FRACT_NUMBER = 25600000; 
@@ -173,7 +173,7 @@ int main(int argc, char **argv) {
     // Clean from possibly broken string
     while(serial.available() < TEMP_BUF_SIZE) {
         str = serial.readline(); 
-        if(str.at(str.size()-1)=='\n') {
+        if(!str.empty() && str.at(str.size()-1)=='\n') {
             break;
         }
     }
@@ -185,15 +185,17 @@ int main(int argc, char **argv) {
             std::vector<int16_t> ints = string_to_ints(str, PLD_STRT_INDX);
             FieldsCount fields_count;
             ros::Time ts = ints_to_board_ts(ints, &fields_count);
-            switch (str.at(0)) {
-                case 'i': {
-                    boost::numeric::ublas::vector<double> imu_meas;
-                    imu_meas = ints_to_imu_meas(ints, &fields_count);
-                    publish_imu(imu_pub, 0, ts, imu_meas);
-                    publish_imu_temperature(imu_temp_pub, 0, ts, imu_meas);
-                    break;
-                }
-            }
+            if (!str.empty()) {
+		    switch (str.at(0)) {
+			case 'i': {
+			    boost::numeric::ublas::vector<double> imu_meas;
+			    imu_meas = ints_to_imu_meas(ints, &fields_count);
+			    publish_imu(imu_pub, 0, ts, imu_meas);
+			    publish_imu_temperature(imu_temp_pub, 0, ts, imu_meas);
+			    break;
+			}
+		    }
+	    }
         }
         usleep(100);
     }

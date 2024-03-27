@@ -15,7 +15,7 @@
 
 std::string IMU_TOPIC = "mcu_imu";
 std::string IMU_TEMP_TOPIC_POSTFIX = "_temp";
-//std::string LIDAR_TS_TOPIC = "mcu_lidar_ts";
+std::string LIDAR_TS_TOPIC = "mcu_lidar_ts";
 
 
 std::string IMU_TEMP_TOPIC = IMU_TOPIC + IMU_TEMP_TOPIC_POSTFIX;
@@ -137,6 +137,15 @@ void publish_imu_temperature(ros::Publisher pub, uint8_t imu_n, ros::Time ts, bo
 }
 
 
+void publish_lidar_ts(ros::Publisher pub, ros::Time ts) {
+    std::string frame_id = LIDAR_TS_TOPIC;
+    sensor_msgs::TimeReference msg;
+
+    msg.header.frame_id = frame_id;
+    msg.header.stamp = ts;
+    msg.time_ref = ros::Time::now();
+    pub.publish(msg);
+}
 
 int main(int argc, char **argv) {
     // Register signal and signal handler
@@ -158,7 +167,7 @@ int main(int argc, char **argv) {
     ros::NodeHandle nh;
     ros::Publisher imu_pub = nh.advertise<sensor_msgs::Imu>(IMU_TOPIC, RATE);
     ros::Publisher imu_temp_pub = nh.advertise<sensor_msgs::Temperature>(IMU_TEMP_TOPIC, RATE);
-    //ros::Publisher lidar_ts_pub = nh.advertise<sensor_msgs::TimeReference>(LIDAR_TS_TOPIC, RATE);
+    ros::Publisher lidar_ts_pub = nh.advertise<sensor_msgs::TimeReference>(LIDAR_TS_TOPIC, RATE);
         
     // open port, baudrate, timeout in milliseconds
     serial::Serial serial(PORT, BAUD, serial::Timeout::simpleTimeout(TIMOUT));
@@ -194,6 +203,10 @@ int main(int argc, char **argv) {
 			    publish_imu_temperature(imu_temp_pub, 0, ts, imu_meas);
 			    break;
 			}
+			case 'l': {
+		            publish_lidar_ts(lidar_ts_pub, ts);
+		            break;
+                	}
 		    }
 	    }
         }

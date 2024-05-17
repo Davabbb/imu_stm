@@ -5,3 +5,6 @@
 	path = ros_ws/src/velodyne
 	url = https://github.com/anastasiia-kornilova/velodyne.git
 	branch = mrob_patches
+[submodule "serial-ros2"]
+	path = serial-ros2
+	url = https://github.com/RoverRobotics-forks/serial-ros2

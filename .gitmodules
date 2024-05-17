@@ -1,10 +1,7 @@
-[submodule "ros_ws/src/serial"]
-	path = ros_ws/src/serial
-	url = https://github.com/wjwwood/serial.git
 [submodule "ros_ws/src/velodyne"]
 	path = ros_ws/src/velodyne
 	url = https://github.com/anastasiia-kornilova/velodyne.git
 	branch = mrob_patches
-[submodule "serial-ros2"]
-	path = serial-ros2
+[submodule "serial"]
+	path = ros_ws/srs/serial
 	url = https://github.com/RoverRobotics-forks/serial-ros2

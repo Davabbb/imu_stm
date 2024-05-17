@@ -9,7 +9,7 @@
 
 ## Prerequisites
 - OS version: Ubuntu 18.04  
-- ROS version: Melodic. Install Desktop-Full from [here](http://wiki.ros.org/melodic/Installation/Ubuntu)
+- ROS version: Humble. Install Desktop-Full from [here](http://wiki.ros.org/melodic/Installation/Ubuntu)
 
 - Velodyne related notes
     - To set up lidar go to [tutorial](http://wiki.ros.org/velodyne/Tutorials/Getting%20Started%20with%20the%20Velodyne%20VLP16) and do __only__ step `1.1 Configure your computer’s IP address through the Gnome interface` and just in case `4. Viewing the Data`
@@ -21,14 +21,12 @@
 Then log out and log in.  
 
     
-## Full roslaunch
-The following command is used for launching all of the sensors:  
-
-`roslaunch data_collection data_collection.launch`
+## Ros2
+The following command is used for launching all of the sensors:   
+`ros2 run mcu_interface mcu /dev/ttyUSB0 &`
 
 ## Velodyne LIDAR
 Patched package is used for hardware time synchronization of lidar
-
 
 ## MCU-IMU node
 MCU-IMU node is receiving data from hardware platform via virtual serial port and publishing the following topics:  
@@ -37,4 +35,4 @@ MCU-IMU node is receiving data from hardware platform via virtual serial port an
 `/lidar_ts` - platform local timestamps of triggered pulses for hardware lidar synchronization  
 
 ## Serial
-`serial` is a C++ library for seial interface with MCU ([repo](https://github.com/wjwwood/serial.git)).
+`serial` is a C++ library for seial interface with MCU ([repo](https://github.com/RoverRobotics-forks/serial-ros2)).

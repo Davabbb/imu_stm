@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.3)
+cmake_minimum_required(VERSION 3.5)
 project(data_collection)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
@@ -7,11 +7,23 @@ project(data_collection)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED COMPONENTS
-  roscpp
-  rospy
-  std_msgs
-)
+find_package(ament_cmake REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(rclpy REQUIRED)
+find_package(std_msgs REQUIRED)
+find_package(sensor_msgs REQUIRED)
+#find_package(serial REQUIRED)
+include_directories(serial_INCLUDE_DIRS)
+include_directories(${sensor_msgs_INCLUDE_DIRS})
+find_package(Boost REQUIRED COMPONENTS system filesystem thread)
+
+
+#set(dependencies
+#    rclcpp
+#    std_msgs
+#    sensor_msgs
+#)
+
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -102,7 +114,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## LIBRARIES: libraries you create in this project that dependent projects also need
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
-catkin_package(
+ament_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES beginner_tutorials
 #  CATKIN_DEPENDS roscpp rospy std_msgs
@@ -117,7 +129,7 @@ catkin_package(
 ## Your package locations should be listed before other locations
 include_directories(
 # include
-  ${catkin_INCLUDE_DIRS}
+  ${Boost_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
@@ -185,6 +197,16 @@ include_directories(
 #   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 # )
 
+#add_executable(mcu /root/src/mcu_interface/src/mcu.cpp)
+#ament_target_dependencies(mcu ${dependencies})
+#
+#install(TARGETS
+#        mcu
+#        DESTINATION lib/${PROJECT_NAME})
+#
+#install(DIRECTORY launch
+#        DESTINATION share/${PROJECT_NAME})
+
 #############
 ## Testing ##
 #############
@@ -194,6 +216,8 @@ include_directories(
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()
+
+#target_link_libraries(${PROJECT_NAME} ${rclcpp_LIBRARIES} ${Boost_LIBRARIES} ${serial_LIBRARIES} ${sensor_msgs_LIBRARIES})
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)

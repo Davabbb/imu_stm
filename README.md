@@ -12,8 +12,8 @@ To clone the repository with proper submodules utilize `--recurse-submodules` ar
 
 ## System requirements
 The project was tested using:
-- Ubuntu 18.06
-- ROS Melodic Morenia
+- Ubuntu 22.04
+- ROS Humble
 - STM32CubeIDE for Linux
 
 ## Hardware
@@ -109,4 +109,3 @@ Any question — raise an issue, please.
   primaryClass={cs.RO}
 }
 ```
-# imu_stm

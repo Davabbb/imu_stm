@@ -1,7 +1,12 @@
-FROM ros:noetic
+FROM ros:humble-ros-base@sha256:d254bb722b9b490d3b71723dc2a55591170daad2851ad45e367114c211889120
 
 RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
+    
+RUN apt-get update && apt-get install -y libboost-all-dev
+#RUN apt-get update && apt-get install -y \
+#    ros-melodic-rosidl-generator-cpp
+RUN apt-get install -y ros-humble-sensor-msgs
 
 WORKDIR /root
 
@@ -9,18 +14,6 @@ COPY ros_ws /root
 
 VOLUME /root
 
-#RUN echo '#!/bin/sh\n\
-#   set -e\n\
-#    /usr/sbin/usermod -aG sudo,adm,dialout,video root\n\
-#    sed -i "s/^%sudo.*/%sudo ALL=(ALL) NOPASSWD: ALL/" /etc/sudoers\n\
-#    ' > /usr/local/bin/start.sh && \
-#    chmod +x /usr/local/bin/start.sh && \
-#    /usr/local/bin/start.sh && \
-#    rm /usr/local/bin/start.sh
-
-#RUN usermod -a -G dialout root
-#RUN sudo usermod -a -G tty root
-
-CMD ["roslaunch"]
+CMD ["bash"]
 
 
